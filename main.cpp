@@ -3,44 +3,51 @@
 #include<math.h>
 
 
-using namespace std
+using namespace std;
 
-class Vector
+
+;class Vektor
 { 
 public:
   double x;
   double y;
   double z;
 
-  Vector(double x, double y, double z) : x(x), y(y), z(z) {}
-  Vector operator+(const Vector &b)
+  Vektor(double x, double y, double z) : x(x), y(y), z(z) {}
+  Vektor operator+(const Vektor &b)
   {
-    Vector summe(x +b.x, y + b.y, z +b.z);
+    Vektor summe(x +b.x, y + b.y, z +b.z);
     return summe;  
   }
-double operator*(const Vector &a) 
+double operator*(const Vektor &a) 
 {
 double produkt(x*a.x+y*a.y+z*a.z);
 return produkt;
 }
-Vector operator*(const double &a)
+Vektor operator*(const double &a)
 {
-    Vector pro(a*x, a*y, a*z);
-    return pro
-};
-double norm(Vector a) {
+    Vektor pro(a*x, a*y, a*z);
+    return pro;
+}
+double norm(Vektor a) {
     return sqrt(a * a);
 }
-std::ostream &operator<<(std::ostream &Str, Vector const &v)
+std::ostream &operator<<(std::ostream &Str, Vektor const &v)
 {
-    Str << "["<<v.x<<","<<v.y<<","v.z"]";
+    Str << "["<<v.x<<","<<v.y<<","<<v.z<<"]";
    return Str;
-}
+};
 
 int main()
 {
-  vector<Vector> xe, xm, ve, vm, ae, am;
-Vector xe0(0, 0, 0), xm0(1e6, 1e6, 1e6), ve0(0, 0, 0), vm0(0, 0, 0);
+ double me = 5.96e24;
+ double mm = 6.39e23;
+ double G = 6.67384e-11;
+ double m = -1;
+
+
+vector<Vektor> xe, xm, ve, vm, ae, am;
+Vektor xe0(0, 0, 0), xm0(1e6, 1e6, 1e6), ve0(0, 0, 0), vm0(0, 0, 0);
 
 xe.push_back(xe0);
 xm.push_back(xm0);
@@ -48,10 +55,10 @@ ve.push_back(ve0);
 vm.push_back(vm0);
 
 vector<double> dt;
-dt.push_back(0.01)    
+dt.push_back(0.01);    
 
  for(int i = 0;i <= 10000; ++i){
-Vector r = xm[i] + (xe[i]*m);
+Vektor r = xm[i] + (xe[i]*m);
 ae.push_back(r*(mm/((r*r)*norm(r)))*G);
 am.push_back((ae[i]*m)*(me/mm));
 ve.push_back(ve[i]+(ae[i]*dt[i]));
@@ -64,8 +71,11 @@ cout << norm(vm[i]) << " " << norm(r) << endl;
 
 
 
- } 
+ }   
+    
+    
     return 0;
+
 }
 
 
