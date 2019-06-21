@@ -55,7 +55,7 @@ ve.push_back(ve0);
 vm.push_back(vm0);
 
 vector<double> dt;
-dt.push_back(0.01);    
+dt.push_back(0.1);    
 
  for(int i = 0;i <= 10000; ++i){
 Vektor r = xm[i] + (xe[i]*m);
@@ -69,7 +69,14 @@ dt.push_back(dt[i]);
 
 cout << norm(vm[i]) << " " << norm(r) << endl;
 
-
+if(norm(vm[i])/(norm(r)*norm(r)) >= 1e-8)   
+{
+ dt.push_back(((norm(r)*norm(r))/norm(vm[i]))*1e-8);
+ 
+}
+   else{
+     dt.push_back(0.1);
+                          }
 
  }   
     
