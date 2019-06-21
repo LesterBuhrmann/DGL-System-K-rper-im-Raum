@@ -76,7 +76,7 @@ if(norm(vm[i])/(norm(r)*norm(r)) >= 1e-8)    //Kontrolle des v zu r^2 Verhältni
  
 }
    else{
-     dt.push_back(0.1);
+     dt.push_back(0.1);                   //ansonsten zurück zum groben Intervall
                           }
 
  }   
