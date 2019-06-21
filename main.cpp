@@ -6,7 +6,7 @@
 using namespace std;
 
 
-;class Vektor
+;class Vektor          //Einführung einer Klasse für 3D Vektoren
 { 
 public:
   double x;
@@ -14,25 +14,25 @@ public:
   double z;
 
   Vektor(double x, double y, double z) : x(x), y(y), z(z) {}
-  Vektor operator+(const Vektor &b)
+  Vektor operator+(const Vektor &b)                        //Einführung des Operators für Vektoraddition
   {
     Vektor summe(x +b.x, y + b.y, z +b.z);
     return summe;  
   }
-double operator*(const Vektor &a) 
+double operator*(const Vektor &a)                 //Einführung des Operators für Skalarprodukt von Vektoren
 {
 double produkt(x*a.x+y*a.y+z*a.z);
 return produkt;
 }
-Vektor operator*(const double &a)
+Vektor operator*(const double &a)                 //Einführung des Operators für rechtsseitige Multiplikation mit einem Skalar
 {
     Vektor pro(a*x, a*y, a*z);
     return pro;
 }
-double norm(Vektor a) {
+double norm(Vektor a) {                          //Einführung der Betragsfunktion
     return sqrt(a * a);
 }
-std::ostream &operator<<(std::ostream &Str, Vektor const &v)
+std::ostream &operator<<(std::ostream &Str, Vektor const &v) //Ein Operator, um einzelne Vektoren schneller und kompakter über cout auszugeben 
 {
     Str << "["<<v.x<<","<<v.y<<","<<v.z<<"]";
    return Str;
@@ -40,38 +40,39 @@ std::ostream &operator<<(std::ostream &Str, Vektor const &v)
 
 int main()
 {
- double me = 5.96e24;
- double mm = 6.39e23;
- double G = 6.67384e-11;
- double m = -1;
+ double me = 5.96e24;  //Masse der Erde
+ double mm = 6.39e23;  //Masse des Mars
+ double G = 6.67384e-11; //Gravitationskonstante
+ double m = -1;       //Minus eins als für Umkehrung von Vektoren
 
 
-vector<Vektor> xe, xm, ve, vm, ae, am;
-Vektor xe0(0, 0, 0), xm0(1e6, 1e6, 1e6), ve0(0, 0, 0), vm0(0, 0, 0);
+vector<Vektor> xe, xm, ve, vm, ae, am;     //Erstellen von vector-arrays der Ortsvektoren, Geschwindigkeits und Beschleunigungsvektoren
+Vektor xe0(0, 0, 0), xm0(1e6, 1e6, 1e6), ve0(0, 0, 0), vm0(0, 0, 0);   //Der Mars ist ungefähr anfangs 1.7 Millionen Meter von der Erde entfernt
+                                                     //Die Anfangswerte werden benötigt, um in der for Schleife das Euler-Verfahren durchzuführen
 
-xe.push_back(xe0);
+xe.push_back(xe0);             //arrays werden mit Anfangswerten aufgefüllt.
 xm.push_back(xm0);
 ve.push_back(ve0);
 vm.push_back(vm0);
 
-vector<double> dt;
+vector<double> dt;            //Die Länge des Zeitschritts dt ist vom Abstand und der Geschwindigkeit abhängig, weshalb dafür ein Array angelegt wird.
 dt.push_back(0.1);    
 
- for(int i = 0;i <= 10000; ++i){
-Vektor r = xm[i] + (xe[i]*m);
-ae.push_back(r*(mm/((r*r)*norm(r)))*G);
-am.push_back((ae[i]*m)*(me/mm));
-ve.push_back(ve[i]+(ae[i]*dt[i]));
-vm.push_back(vm[i]+(am[i]*dt[i]));
-xe.push_back(xe[i]+ve[i]*dt[i]);
-xm.push_back(xm[i]+vm[i]*dt[i]);
-dt.push_back(dt[i]);
+ for(int i = 0;i <= 10000; ++i){     //Nach dem Euler-Verfahren wird hier die Bewegung der Körper schrittweise numerisch ermittelt.
+Vektor r = xm[i] + (xe[i]*m);        //Abstandsvektor
+ae.push_back(r*(mm/((r*r)*norm(r)))*G); //Beschleunigungsvektor der Erde nach newtonscher Gravitation
+am.push_back((ae[i]*m)*(me/mm));     //Beschhleunigungsvektor des Mars
+ve.push_back(ve[i]+(ae[i]*dt[i]));   //Geschwindigkeitsvektor der Erde über Tangentenzerlegung von ve
+vm.push_back(vm[i]+(am[i]*dt[i]));   //Geschwindihkeitsvektor des Mars
+xe.push_back(xe[i]+ve[i]*dt[i]);     //Ortsvektor der Erde über Tangentenzerlegung von xe
+xm.push_back(xm[i]+vm[i]*dt[i]);     //Ortsvekor des Mars
+                 
 
-cout << norm(vm[i]) << " " << norm(r) << endl;
+cout << norm(vm[i]) << " " << norm(r) << endl;      //Ausgabe beliebiger Größen
 
-if(norm(vm[i])/(norm(r)*norm(r)) >= 1e-8)   
+if(norm(vm[i])/(norm(r)*norm(r)) >= 1e-8)    //Kontrolle des v zu r^2 Verhältnisses 
 {
- dt.push_back(((norm(r)*norm(r))/norm(vm[i]))*1e-8);
+ dt.push_back(((norm(r)*norm(r))/norm(vm[i]))*1e-8); //Funktion für veränderliches Zeitintervall.
  
 }
    else{
