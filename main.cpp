@@ -6,8 +6,8 @@
 using namespace std;
 
 
-;class Vektor          //Einführung einer Klasse für 3D Vektoren
-{ 
+class Vektor          //Einführung einer Klasse für 3D Vektoren
+{
 public:
   double x;
   double y;
@@ -17,7 +17,7 @@ public:
   Vektor operator+(const Vektor &b)                        //Einführung des Operators für Vektoraddition
   {
     Vektor summe(x +b.x, y + b.y, z +b.z);
-    return summe;  
+    return summe;
   }
 double operator*(const Vektor &a)                 //Einführung des Operators für Skalarprodukt von Vektoren
 {
@@ -29,14 +29,16 @@ Vektor operator*(const double &a)                 //Einführung des Operators f�
     Vektor pro(a*x, a*y, a*z);
     return pro;
 }
+};
 double norm(Vektor a) {                          //Einführung der Betragsfunktion
     return sqrt(a * a);
 }
-std::ostream &operator<<(std::ostream &Str, Vektor const &v) //Ein Operator, um einzelne Vektoren schneller und kompakter über cout auszugeben 
+std::ostream &operator<<(std::ostream &Str, Vektor const &v) //Ein Operator, um einzelne Vektoren schneller und kompakter über cout auszugeben
 {
     Str << "["<<v.x<<","<<v.y<<","<<v.z<<"]";
    return Str;
-};
+}
+
 
 int main()
 {
@@ -56,7 +58,7 @@ ve.push_back(ve0);
 vm.push_back(vm0);
 
 vector<double> dt;            //Die Länge des Zeitschritts dt ist vom Abstand und der Geschwindigkeit abhängig, weshalb dafür ein Array angelegt wird.
-dt.push_back(0.1);    
+dt.push_back(0.1);
 
  for(int i = 0;i <= 10000; ++i){     //Nach dem Euler-Verfahren wird hier die Bewegung der Körper schrittweise numerisch ermittelt.
 Vektor r = xm[i] + (xe[i]*m);        //Abstandsvektor
@@ -66,29 +68,22 @@ ve.push_back(ve[i]+(ae[i]*dt[i]));   //Geschwindigkeitsvektor der Erde über Tan
 vm.push_back(vm[i]+(am[i]*dt[i]));   //Geschwindihkeitsvektor des Mars
 xe.push_back(xe[i]+ve[i]*dt[i]);     //Ortsvektor der Erde über Tangentenzerlegung von xe
 xm.push_back(xm[i]+vm[i]*dt[i]);     //Ortsvekor des Mars
-                 
+
 
 cout << norm(vm[i]) << " " << norm(r) << endl;      //Ausgabe beliebiger Größen
 
-if(norm(vm[i])/(norm(r)*norm(r)) >= 1e-8)    //Kontrolle des v zu r^2 Verhältnisses 
+if(norm(vm[i])/(norm(r)*norm(r)) >= 1e-8)    //Kontrolle des v zu r^2 Verhältnisses
 {
  dt.push_back(((norm(r)*norm(r))/norm(vm[i]))*1e-8); //Funktion für veränderliches Zeitintervall.
- 
+
 }
    else{
      dt.push_back(0.1);                   //ansonsten zurück zum groben Intervall
                           }
 
- }   
-    
-    
+ }
+
+
     return 0;
 
 }
-
-
-
-
-
-}
-
