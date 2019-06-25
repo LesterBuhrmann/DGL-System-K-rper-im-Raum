@@ -72,7 +72,7 @@ xm.push_back(xm[i]+vm[i]*dt[i]);     //Ortsvekor des Mars
 
 cout << xm[i] << " " << xe[i] << " " << norm(r) << endl;      //Ausgabe beliebiger Größen
 
-if(norm(vm[i])/(norm(r)*norm(r)) >= 1e-8)    //Kontrolle des v zu r^2 Verhältnisses
+if((0.1 >= ((norm(r)*norm(r))/norm(vm[i]))*1e-8) && (norm(vm[i])/(norm(r)*norm(r)) >= 1e-8))    //Kontrolle des v zu r^2 Verhältnisses
 {
  dt.push_back(((norm(r)*norm(r))/norm(vm[i]))*1e-8); //Funktion für veränderliches Zeitintervall.
 
