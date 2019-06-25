@@ -47,16 +47,18 @@ int main()
  double mm = 6.39e23;  //Masse des Mars
  double G = 6.67384e-11; //Gravitationskonstante
  double m = -1;       //Minus eins als für Umkehrung von Vektoren
+ double mmerk = 0.055*me;
 
-
-vector<Vektor> xe, xm, ve, vm, ae, am;     //Erstellen von vector-arrays der Ortsvektoren, Geschwindigkeits und Beschleunigungsvektoren
-Vektor xe0(0, 0, 0), xm0(1e6, 1e6, 1e6), ve0(0, 0, 0), vm0(-10000, 0, -5000);   //Der Mars ist ungefähr anfangs 1.7 Millionen Meter von der Erde entfernt
+vector<Vektor> xe, xm, xmerk, ve, vm, vmerk, ae, am, amerk;     //Erstellen von vector-arrays der Ortsvektoren, Geschwindigkeits und Beschleunigungsvektoren
+Vektor xe0(0, 0, 0), xm0(1e6, 1e6, 1e6), xmerk0(0, -1e6, 0), ve0(0, 0, 0), vm0(-10000, 0, -5000), vmerk0(0,0,0);   //Der Mars ist ungefähr anfangs 1.7 Millionen Meter von der Erde entfernt
                                                      //Die Anfangswerte werden benötigt, um in der for Schleife das Euler-Verfahren durchzuführen
 
 xe.push_back(xe0);             //arrays werden mit Anfangswerten aufgefüllt.
 xm.push_back(xm0);
+xmerk.push_back(xmerk0);
 ve.push_back(ve0);
 vm.push_back(vm0);
+vmerk.push_back(vmerk0);
 
 vector<double> dt,t,k;   //Die Länge des Zeitschritts dt ist vom Abstand und der Geschwindigkeit abhängig, weshalb dafür ein Array angelegt wird.
                          //t ist der absolute Zeitwert und k wird benötigt um gerundete Zeitpunkte zu bilden
@@ -68,13 +70,21 @@ vector<int> tn; // Dies werden die Zeitschritte für die als txt Datei ausgegebe
 
 int N = 20000;
  for(int i = 0;i <= N; ++i){     //Nach dem Euler-Verfahren wird hier die Bewegung der Körper schrittweise numerisch ermittelt.
-Vektor r = xm[i] + (xe[i]*m);        //Abstandsvektor
-ae.push_back(r*(mm/((r*r)*norm(r)))*G); //Beschleunigungsvektor der Erde nach newtonscher Gravitation
-am.push_back((ae[i]*m)*(me/mm));     //Beschhleunigungsvektor des Mars
+Vektor Rme = xm[i] + (xe[i]*m);  //Abstandsvektor
+Vektor Remerk = xe[i] + (xmerk[i]*m);
+Vektor Rmmerk = xm[i] + (xmerk[i]*m);
+Vektor Fem = Rme*((mm*me)/((Rme*Rme)*norm(Rme)))*G;
+Vektor Fmerke = Remerk*((mmerk*me)/((Remerk*Remerk)*norm(Remerk)))*G;
+Vektor Fmerkm = Rmmerk*((mmerk*mm)/((Rmmerk*Rmmerk)*norm(Rmmerk)))*G;
+ae.push_back(((Fmerke*m)+Fem)*(1/me)); //Beschleunigungsvektor der Erde nach newtonscher Gravitation
+am.push_back((Fmerkm+Fem)*(m/mm));     //Beschhleunigungsvektor des Mars (Erinnerung:m = -1)
+amerk.push_back((Fmerke+Fmerkm)*(1/mmerk));
 ve.push_back(ve[i]+(ae[i]*dt[i]));   //Geschwindigkeitsvektor der Erde über Tangentenzerlegung von ve des vorherigen Zeitpunkts
 vm.push_back(vm[i]+(am[i]*dt[i]));   //Geschwindihkeitsvektor des Mars
+vmerk.push_back(vmerk[i]+(amerk[i]*dt[i]));
 xe.push_back(xe[i]+ve[i]*dt[i]);     //Ortsvektor der Erde über Tangentenzerlegung von xe des vorherigen Zeitpunkts
 xm.push_back(xm[i]+vm[i]*dt[i]);     //Ortsvekor des Mars
+xmerk.push_back(xmerk[i]+vmerk[i]*dt[i]);
 t.push_back(t[i]+dt[i]);
 
 if(t[i] >= round(10*t[i])/10) {   //Wenn der Momentane Zeitwert genau um 0.1 größer als der auf eine Stelle gerundete Zeitwert ist,
@@ -87,9 +97,9 @@ k.push_back(k[i-1]);  //Sonst wird der vorherige Wert eingeschoben
 
 cout << xm[i] << " " << xe[i] << " " << k[i] << endl;      //Ausgabe beliebiger Größen
 
-if((0.1 >= ((norm(r)*norm(r))/norm(vm[i]))*1e-8) && (norm(vm[i])/(norm(r)*norm(r)) >= 1e-8))    //Kontrolle des v zu r^2 Verhältnisses
+if((0.1 >= ((norm(Rme)*norm(Rme))/norm(vm[i]))*1e-8) && (norm(vm[i])/(norm(Rme)*norm(Rme)) >= 1e-8))    //Kontrolle des v zu r^2 Verhältnisses
 {
- dt.push_back(((norm(r)*norm(r))/norm(vm[i]))*1e-8); //Funktion für veränderliches Zeitintervall.
+ dt.push_back(((norm(Rme)*norm(Rme))/norm(vm[i]))*1e-8); //Funktion für veränderliches Zeitintervall.
 
 }
    else{
@@ -128,6 +138,17 @@ fprintf(fs,"%e %e %e\n", xe[tn[j]].x, xe[tn[j]].y, xe[tn[j]].z);
 
  }
 fclose(fs);
+
+FILE* fl;
+ fs = fopen("xMerkur.txt","w");
+ for(int j = 0;j <= Schrittzahl; j++)
+ {
+
+
+fprintf(fs,"%e %e %e\n", xmerk[tn[j]].x, xmerk[tn[j]].y, xmerk[tn[j]].z);
+
+ }
+fclose(fl);
 
     return 0;
 
