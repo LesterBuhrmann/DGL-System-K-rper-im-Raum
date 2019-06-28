@@ -135,12 +135,12 @@ fprintf(fs,"%e %e %e\n", xe[tn[j]].x, xe[tn[j]].y, xe[tn[j]].z);
 fclose(fs);
 
 FILE* fl;
- fs = fopen("xMerkur.txt","w");
+ fl = fopen("xMerkur.txt","w");
  for(int j = 0;j <= Schrittzahl; j++)
  {
 
 
-fprintf(fs,"%e %e %e\n", xmerk[tn[j]].x, xmerk[tn[j]].y, xmerk[tn[j]].z);
+fprintf(fl,"%e %e %e\n", xmerk[tn[j]].x, xmerk[tn[j]].y, xmerk[tn[j]].z);
 
  }
 fclose(fl);
