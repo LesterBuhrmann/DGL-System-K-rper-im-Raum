@@ -50,7 +50,7 @@ int main()
  double mmerk = 0.055*me;
 
 vector<Vektor> xe, xm, xmerk, ve, vm, vmerk, ae, am, amerk;     //Erstellen von vector-arrays der Ortsvektoren, Geschwindigkeits und Beschleunigungsvektoren
-Vektor xe0(0, 0, 0), xm0(1e6, 1e6, 1e6), xmerk0(0, -1e6, 0), ve0(0, 0, 0), vm0(-10000, 0, -5000), vmerk0(0,0,0);   //Der Mars ist ungefähr anfangs 1.7 Millionen Meter von der Erde entfernt
+Vektor xe0(0, 0, 0), xm0(1e6, 1e6, 1e6), xmerk0(0, -1e6, 0), ve0(0, 0, 0), vm0(-10000, 0, -5000), vmerk0(0,0,40000);   //Der Mars ist ungefähr anfangs 1.7 Millionen Meter von der Erde entfernt
                                                      //Die Anfangswerte werden benötigt, um in der for Schleife das Euler-Verfahren durchzuführen
 
 xe.push_back(xe0);             //arrays werden mit Anfangswerten aufgefüllt.
@@ -87,15 +87,23 @@ xm.push_back(xm[i]+vm[i]*dt[i]);     //Ortsvekor des Mars
 xmerk.push_back(xmerk[i]+vmerk[i]*dt[i]);
 t.push_back(t[i]+dt[i]);
 
-k.push_back(round(10*t[i])/10);
+k.push_back(round(t[i]*10)/t[i]);
 
 
-cout << xm[i] << " " << xe[i] << " " << k[i] << endl;      //Ausgabe beliebiger Größen
+cout << xmerk[i] << " " << norm(xe[i]) << " " << k[i] << endl;      //Ausgabe beliebiger Größen
 
-if((0.1 >= ((norm(Rme)*norm(Rme))/norm(vm[i]))*1e-8) && (norm(vm[i])/(norm(Rme)*norm(Rme)) >= 1e-8))    //Kontrolle des v zu r^2 Verhältnisses
+double Dme = ((norm(Rme)*norm(Rme))/norm(vm[i]))*1e-8;     //Zunächst werden die möglichen Funktionen für dt deklariert
+double Demerk = ((norm(Remerk)*norm(Remerk))/norm(vmerk[i]))*1e-8;
+double Dmmerk = ((norm(Rmmerk)*norm(Rmmerk))/norm(vmerk[i]))*1e-8;
+
+if(((0.1 >= Dme) && ((1/Dme) >= 1))||((0.1 >= Demerk) && ((1/Demerk) >= 1))||((0.1 >= Dmmerk) && ((1/Dmmerk) >= 1)))    //Kontrolle des v zu r^2 Verhältnisses
 {
- dt.push_back(((norm(Rme)*norm(Rme))/norm(vm[i]))*1e-8); //Funktion für veränderliches Zeitintervall.
-
+ if((Dme < Dmmerk)&&(Dme < Demerk)){      //je nachdem, welche Körper sich zu nahe kommen,
+ dt.push_back(Dme);}                     //wird die dafür verantwortliche Funktion für dt verwendet.     
+if((Dmmerk < Dme)&&(Dmmerk < Demerk)){
+ dt.push_back(Dmmerk);}
+ if((Demerk < Dme)&&(Demerk < Dmmerk)){
+ dt.push_back(Demerk);}
 }
    else{
      dt.push_back(0.1);                   //ansonsten zurück zum groben Intervall
@@ -134,16 +142,16 @@ fprintf(fs,"%e %e %e\n", xe[tn[j]].x, xe[tn[j]].y, xe[tn[j]].z);
  }
 fclose(fs);
 
-FILE* fl;
- fl = fopen("xMerkur.txt","w");
+FILE* fk;
+ fs = fopen("xMerkur.txt","w");
  for(int j = 0;j <= Schrittzahl; j++)
  {
 
 
-fprintf(fl,"%e %e %e\n", xmerk[tn[j]].x, xmerk[tn[j]].y, xmerk[tn[j]].z);
+fprintf(fk,"%e %e %e\n", xmerk[tn[j]].x, xmerk[tn[j]].y, xmerk[tn[j]].z);
 
  }
-fclose(fl);
+fclose(fk);
 
     return 0;
 
