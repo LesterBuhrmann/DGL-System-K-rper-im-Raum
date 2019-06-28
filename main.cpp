@@ -87,12 +87,7 @@ xm.push_back(xm[i]+vm[i]*dt[i]);     //Ortsvekor des Mars
 xmerk.push_back(xmerk[i]+vmerk[i]*dt[i]);
 t.push_back(t[i]+dt[i]);
 
-if(t[i] >= round(10*t[i])/10) {   //Wenn der Momentane Zeitwert genau um 0.1 größer als der auf eine Stelle gerundete Zeitwert ist,
-k.push_back(round(10*t[i])/10);   //wird in k der momentane gerundete Zeitwert eingeschoben
-}                               //Damit erhält man ein Array k, dass genau um 0.1 weiterspringt, wenn t gerade knapp größer als k+0.1 ist.
-else{
-k.push_back(k[i-1]);  //Sonst wird der vorherige Wert eingeschoben
-}
+k.push_back(round(10*t[i])/10);
 
 
 cout << xm[i] << " " << xe[i] << " " << k[i] << endl;      //Ausgabe beliebiger Größen
