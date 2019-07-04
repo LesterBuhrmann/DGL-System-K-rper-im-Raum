@@ -71,7 +71,7 @@ double Dme = ((norm(Rme)*norm(Rme))/norm(vm[i]))*1e-8;
 double Demerk = ((norm(Remerk)*norm(Remerk))/norm(vmerk[i]))*1e-8;
 double Dmmerk = ((norm(Rmmerk)*norm(Rmmerk))/norm(vmerk[i]))*1e-8;
 
-if(((0.1 >= Dme) && ((1/Dme) >= 1))||((0.1 >= Demerk) && ((1/Demerk) >= 1))||((0.1 >= Dmmerk) && ((1/Dmmerk) >= 1)))    //Kontrolle des v zu r^2 Verhältnisses
+if((0.1 >= Dme)||(0.1 >= Demerk)||(0.1 >= Dmmerk))    //Kontrolle des v zu r^2 Verhältnisses
 {
  if((Dme < Dmmerk)&&(Dme < Demerk)){
  dt.push_back(Dme);}                          //Funktion für veränderliches Zeitintervall.
