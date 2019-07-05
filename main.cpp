@@ -1,3 +1,14 @@
+//============================================================================
+// Name des Projekts: 3-Körper Problem
+// Author      : Lester Buhrmann,Dennis Budzinski
+// Version     :
+// Copyright   : Your copyright notice
+// Description : Hello World in C++, Ansi-style
+//============================================================================
+
+
+
+
 #include<iostream>
 #include<vector>
 #include<math.h>
