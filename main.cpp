@@ -73,16 +73,16 @@ xm.push_back(xm[i]+vm[i]*dt[i]);     //Ortsvekor des Mars
 xmerk.push_back(xmerk[i]+vmerk[i]*dt[i]);
 t.push_back(t[i]+dt[i]);
 
-k.push_back(round(t[i]*10)/10);
+k.push_back(round(t[i]*1/dt[0])*dt[0]);
 
 
 cout << xmerk[i] << " " << norm(xe[i]) << " " << k[i] << endl;      //Ausgabe beliebiger Größen
 
-double Dme = ((norm(Rme)*norm(Rme))/norm(vm[i]))*1e-8;
-double Demerk = ((norm(Remerk)*norm(Remerk))/norm(vmerk[i]))*1e-8;
-double Dmmerk = ((norm(Rmmerk)*norm(Rmmerk))/norm(vmerk[i]))*1e-8;
+double Dme = ((norm(Rme)*norm(Rme))/norm(vm[i]))*1e-7*dt[0];
+double Demerk = ((norm(Remerk)*norm(Remerk))/norm(vmerk[i]))*1e-7*dt[0];
+double Dmmerk = ((norm(Rmmerk)*norm(Rmmerk))/norm(vmerk[i]))*1e-7*dt[0];
 
-if((0.1 >= Dme)||(0.1 >= Demerk)||(0.1 >= Dmmerk))    //Kontrolle des v zu r^2 Verhältnisses
+if((dt[0] >= Dme)||(dt[0] >= Demerk)||(dt[0] >= Dmmerk))    //Kontrolle des v zu r^2 Verhältnisses
 {
  if((Dme < Dmmerk)&&(Dme < Demerk)){
  dt.push_back(Dme);}                          //Funktion für veränderliches Zeitintervall.
@@ -92,7 +92,7 @@ if((Dmmerk < Dme)&&(Dmmerk < Demerk)){
  dt.push_back(Demerk);}
 }
    else{
-     dt.push_back(0.1);                   //ansonsten zurück zum groben Intervall
+     dt.push_back(dt[0]);                   //ansonsten zurück zum groben Intervall
                           }
 
  }
