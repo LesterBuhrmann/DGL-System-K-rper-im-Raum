@@ -109,11 +109,12 @@ int main()
  {Koerper1 = "Erde";
   Koerper2 = "Mond";
   Koerper3 = "Sonne";
- Vektor xe0(0,0,0), xm0(0,3.27171e8,1.42258e8), xmerk0(0, 1.471e11, 0), ve0(-29.78e3, 0, 0), vm0(1.067e3-29.78e3, 0, 0), vmerk0(0,0,0);
- double me = 5.96e24;  //Masse der Erde
- double mm = 7.349e22; //Masse des Mondes
- double mmerk = 1.989e30; //Masse der Sonne
- double dt0 = 0.1e3;
+ xe0.x=0;xe0.y=0;xe0.z=0;xm0.x=0;xm0.y=3.27171e8;xm0.z=1.42258e8;xmerk0.x=0;xmerk0.y=1.471e11;xmerk0.z=0;ve0.x=-29.78e3;ve0.y=0;ve0.z=0;vm0.x=1.067e3-29.78e3;vm0.y=0;vm0.z=0;
+ vmerk0.x=0;vmerk0.y=0;vmerk0.z=0;
+ me = 5.96e24;  //Masse der Erde
+ mm = 7.349e22; //Masse des Mondes
+ mmerk = 1.989e30; //Masse der Sonne
+ dt0 = 0.1e3;
        }
  }
 
