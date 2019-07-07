@@ -27,10 +27,14 @@ std::ostream &operator<<(std::ostream &Str, Vektor const &v) //Ein Operator, um 
 
 
 int main()
-{ string Koerper1, Koerper2, Koerper3,Antwort1,Antwort2,Nein1,Nein2,Nein3;
+{ string Koerper1, Koerper2, Koerper3,Antwort1,Antwort2,Ausgabe,Nein1,Nein2,Nein3;
  Nein1 = "nein";
  Nein2 = "Nein";
  Nein3 = "no";
+
+ Koerper1 = "Erde";
+ Koerper2 = "Mars";
+ Koerper3 = "Merkur";
 
  Vektor xe0(0,0,0), xm0(1e6,1e6,1e6), xmerk0(0, -2e6, 0), ve0(0, 0, 0), vm0(-10000, 0, -5000), vmerk0(1000,0,4000);
  double me = 5.96e24;  //Masse der Erde
@@ -118,11 +122,6 @@ int main()
        }
  }
 
-
- double G = 6.67384e-11; //Gravitationskonstante
- double m = -1;       //Minus eins als für Umkehrung von Vektoren
-
-
 vector<Vektor> xe, xm, xmerk, ve, vm, vmerk, ae, am, amerk;     //Erstellen von vector-arrays der Ortsvektoren, Geschwindigkeits und Beschleunigungsvektoren
 
                                                      //Die Anfangswerte werden benötigt, um in der for Schleife das Euler-Verfahren durchzuführen
@@ -141,8 +140,13 @@ dt.push_back(dt0); //Anfangszeitschritt nicht unnötig fein gewählt
 
 vector<int> tn; // Dies werden die Zeitschritte für die als txt Datei ausgegebenen Werte mit gleichmäßigem zeitlichen Abstand werden
 
+int N;
+cout<<"Wähle die Anzahl der Berechnungsschritte(Empfehlung: 20000)"<< endl;
+cin>>N;
 
-int N = 20000;
+ double G = 6.67384e-11; //Gravitationskonstante
+ double m = -1;       //Minus eins als für Umkehrung von Vektoren
+
  for(int i = 0;i <= N; ++i){     //Nach dem Euler-Verfahren wird hier die Bewegung der Körper schrittweise numerisch ermittelt.
 Vektor Rme = xm[i] + (xe[i]*m);  //Abstandsvektor
 Vektor Remerk = xe[i] + (xmerk[i]*m);
@@ -165,7 +169,7 @@ t.push_back(t[i]+dt[i]);
 k.push_back(round(t[i]*1/dt[0])*dt[0]);
 
 
-cout << xm[i] << " " << norm(xe[i]) << " " << k[i] << endl;      //Ausgabe beliebiger Größen
+cout<<Koerper1<<":"<< xm[i] << " Zeit in s: " << t[i] << endl;      //Ausgabe beliebiger Größen
 
 double Dme = ((norm(Rme)*norm(Rme))/norm(vm[i]))*1e-7*dt[0];
 double Demerk = ((norm(Remerk)*norm(Remerk))/norm(vmerk[i]))*1e-7*dt[0];
@@ -215,21 +219,15 @@ double maxxmerkz = *max_element(xmerkz.begin(), xmerkz.end());
 vector<double> xx;
 vector<double> xy;
 vector<double> xz;
-xx.push_back(maxxex);       
-xx.push_back(maxxmx);
-xx.push_back(maxxmerkx);
-xy.push_back(maxxey);
-xy.push_back(maxxmy);
-xy.push_back(maxxmerky);
-xz.push_back(maxxez);
-xz.push_back(maxxmz);
-xz.push_back(maxxmerkz);
-double maxx = *max_element(xx.begin(), xx.end());  //Das Maximum der Maxima aller x Komponenten wird hiermit ermittelt     
+xx.push_back(maxxex); xx.push_back(maxxmx); xx.push_back(maxxmerkx); //Ein kleiner Vektor wird mit den maximalen x-Werten überschrieben
+xy.push_back(maxxey); xy.push_back(maxxmy); xy.push_back(maxxmerky); //Ein kleiner Vektor wird mit den maximalen y-Werten überschrieben
+xz.push_back(maxxez);xz.push_back(maxxmz);xz.push_back(maxxmerkz);   //Ein kleiner Vektor wird mit den maximalen z-Werten überschrieben
+double maxx = *max_element(xx.begin(), xx.end());  //Das Maximum der Maxima aller x Komponenten wird hiermit ermittelt
 double maxy = *max_element(xy.begin(), xy.end());  //Das Maximum der Maxima aller y Komponenten wird hiermit ermittelt
 double maxz = *max_element(xz.begin(), xz.end());  //Das Maximum der Maxima aller z Komponenten wird hiermit ermittelt
 
 
-
+//Die gleiche Prozedur wird für die unteren Grenzen des Intervalls analog wiederholt
 double minxex = *min_element(xex.begin(), xex.end());
 double minxey = *min_element(xey.begin(), xey.end());
 double minxez = *min_element(xez.begin(), xez.end());
@@ -253,9 +251,9 @@ xz.push_back(minxmerkz);
 double minx = *min_element(xx.begin(), xx.end());
 double miny = *min_element(xy.begin(), xy.end());
 double minz = *min_element(xz.begin(), xz.end());
-cout<<"Das maximale x Intervall sollte groeßer gleich : ["<<maxx<<","<<minx<<"] sein"<<endl
-<<"Das maximale y Intervall sollte groeßer gleich : ["<<maxy<<","<<miny<<"] sein"<<endl
-<<"Das maximale z Intervall sollte groeßer gleich : ["<<maxz<<","<<minz<<"] sein"<<endl;
+cout<<"Das maximale x Intervall sollte groesser gleich : ["<<maxx<<","<<minx<<"] sein"<<endl
+<<"Das maximale y Intervall sollte groesser gleich : ["<<maxy<<","<<miny<<"] sein"<<endl
+<<"Das maximale z Intervall sollte groesser gleich : ["<<maxz<<","<<minz<<"] sein"<<endl;
 
 
 string txt, xKoerper1,xKoerper2,xKoerper3;          //Es werden hier strings deklariert, um Dateinamen zu erstellen, die der Eingabe der Namen der Körper entsprechen
@@ -302,4 +300,5 @@ fclose(fk);
     return 0;
 
 }
+
 
