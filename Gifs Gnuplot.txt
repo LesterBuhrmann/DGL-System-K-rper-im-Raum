@@ -1,0 +1,11 @@
+#Hiermit wird der gif zur Bewegung der 3 Körper erstellt
+set terminal gif animate delay 1 
+
+set output 'Beliebigername.gif' 
+xrange [-2e6:2e6]
+yrange [-2e6:2e6]
+zrange [-2e6:2e6]
+do for [ii=1:40] {splot 'D:\Desktop\main.cpp\Merkur.txt' every ::1::50*ii w l ls 1,'D:\Desktop\main.cpp\Merkur.txt' every ::50*ii::50*ii w p ls 1, 'D:\Desktop\main.cpp\Mars.txt' every ::1::50*ii w l ls 2,'D:\Desktop\main.cpp\Mars.txt' every ::50*ii::50*ii w p ls 2,
+ 'D:\Desktop\main.cpp\Erde.txt' every ::1::50*ii w l ls 3,'D:\Desktop\main.cpp\Erde.txt' every ::50*ii::50*ii w p ls 3}       
+gnuplot> set zrange [-4e9:4e9]  
+
