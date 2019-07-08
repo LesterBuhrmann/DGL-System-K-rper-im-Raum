@@ -27,4 +27,4 @@ gefullt.
 Beim Erstellen der Textdatei werden nur die Stellen in den vector arrays der auszugebenden Grossen in die Textdatei eingeschrieben,
 die in tn eingespeichert sind, also gleichen Zeitabstand haben.
 
-Hinweis:Im Repository von 9k11 ist die mit Cmake erstellte executable hochgeladen worden, die als Backup dient, falls die Makefile Datei nicht richtig konstruiert ist. 
+Hinweis:Im Repository von 9k33 ist die mit Cmake erstellte executable hochgeladen worden, die als Backup dient, falls die Makefile Datei nicht richtig konstruiert ist. 
