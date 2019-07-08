@@ -11,6 +11,7 @@
 #include<math.h>
 #include<string>
 #include<algorithm>
+#include<fstream>
 #include"Vektor.h"
 
 using namespace std;
@@ -256,49 +257,23 @@ cout<<"Das maximale x Intervall sollte groesser gleich : ["<<maxx<<","<<minx<<"]
 <<"Das maximale z Intervall sollte groesser gleich : ["<<maxz<<","<<minz<<"] sein"<<endl;
 
 
-string txt, xKoerper1,xKoerper2,xKoerper3;          //Es werden hier strings deklariert, um Dateinamen zu erstellen, die der Eingabe der Namen der Körper entsprechen
-txt = ".txt";
+Koerper1 += ".txt";
+Koerper2 += ".txt";
+Koerper3 += ".txt";
+fstream f,ds,cs;
+    f.open(Koerper2.c_str(), ios::out);
+    ds.open(Koerper2.c_str(), ios::out);
+    cs.open(Koerper3.c_str(), ios::out);
+    for(int j = 0;j <= Schrittzahl; j++)     //Bis zur Schrittzahl, die der Größe von tn entspricht wird in die txt Datei eingeschrieben
+    {int l = tn[j];                        //Man wählt nur die Elemente mit Positionen im Array, die in tn eingeschrieben sind
+        f << xe[l].x<<" "<<xe[l].y<<" "<<xe[l].z<< endl;
+        ds <<xm[l].x<<" "<<xm[l].y<<" "<<xm[l].z<< endl;
+        cs <<xmerk[l].x<<" "<<xmerk[l].y<<" "<<xmerk[l].z<< endl;
+        }
+    f.close();
+    ds.close();
+    cs.close();
 
-xKoerper1 = Koerper1 + txt;
-xKoerper2 = Koerper2 + txt;
-xKoerper3 = Koerper3 + txt;
-
- FILE* fp;
- fp = fopen(xKoerper1.c_str(),"w");
- for(int j = 0;j <= Schrittzahl; j++)
- {
-
-
-fprintf(fp,"%e %e %e\n", xe[tn[j]].x, xe[tn[j]].y, xe[tn[j]].z); //Ausgabe der txt Datei gleichnamigen zum ersten Körper
-
- }
-fclose(fp);
-
-
-FILE* fs;
- fs = fopen(xKoerper2.c_str(),"w");  //Ausgabe der txt Datei zum gleichnamigen zweiten Körper
- for(int j = 0;j <= Schrittzahl; j++)
- {
-
-
-fprintf(fs,"%e %e %e\n", xm[tn[j]].x, xm[tn[j]].y, xm[tn[j]].z);
-
- }
-fclose(fs);
-
-FILE* fk;
- fk = fopen(xKoerper3.c_str(),"w");
- for(int j = 0;j <= Schrittzahl; j++)
- {
-
-
-fprintf(fk,"%e %e %e\n", xmerk[tn[j]].x, xmerk[tn[j]].y, xmerk[tn[j]].z);
-
- }
-fclose(fk);
-
-    return 0;
-
+return 0;
 }
-
 
