@@ -261,7 +261,7 @@ Koerper1 += ".txt";
 Koerper2 += ".txt";
 Koerper3 += ".txt";
 fstream f,ds,cs;
-    f.open(Koerper2.c_str(), ios::out);
+    f.open(Koerper1.c_str(), ios::out);
     ds.open(Koerper2.c_str(), ios::out);
     cs.open(Koerper3.c_str(), ios::out);
     for(int j = 0;j <= Schrittzahl; j++)     //Bis zur Schrittzahl, die der Größe von tn entspricht wird in die txt Datei eingeschrieben
